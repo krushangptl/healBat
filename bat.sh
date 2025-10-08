@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# --- to display things via zenity with the help of X ---
 export DISPLAY=:0
 export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
 
@@ -9,7 +10,7 @@ LOG_FILE="$LOG_DIR/battery_health.log"
 
 TODAY="$(date +"%Y-%m-%d")"
 YESTERDAY="$(date -d "yesterday" +"%Y-%m-%d")"
-BAT_INFO=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)
+BAT_INFO=$(upower -i $(upower -e | grep BAT))
 
 mkdir -p "$LOG_DIR"
 
@@ -44,7 +45,7 @@ fi
 echo "$TODAY | Charge: ${CHARGE_PER}% | Full: ${ENERGY_FULL} Wh | Design: ${ENERGY_DESIGN} Wh | Health: ${HEALTH}%" >> "$LOG_FILE"
 
 # --- Compare with yesterday ---
-YESTERDAY_LINE=$(grep "$YESTERDAY" "$LOG_FILE" 2>/dev/null)
+YESTERDAY_LINE=$(grep "$YESTERDAY" "$LOG_FILE" 2>/dev/null | tail -n 1)
 
 if [ -n "$YESTERDAY_LINE" ]; then
   YESTERDAY_HEALTH=$(echo "$YESTERDAY_LINE" | awk -F'|' '{print $5}' | grep -o "[0-9.]*")
