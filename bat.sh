@@ -32,13 +32,13 @@ HEALTH=$(echo "scale=2; ($ENERGY_FULL/$ENERGY_DESIGN)*100" | bc)
 # Low battery: only if discharging
 if (( $(echo "$CHARGE_PER < 20" | bc -l) )) && [[ "$BAT_STATE" == "discharging" ]]; then
   zenity --warning --title="Battery Low" --text="Charge is at ${CHARGE_PER}% — please plug in!"
-  paplay /usr/share/sounds/freedesktop/stereo/complete.oga
+  paplay /usr/share/sounds/freedesktop/stereo/bell.oga
 fi
 
 # High battery: only if charging
 if (( $(echo "$CHARGE_PER > 80" | bc -l) )) && [[ "$BAT_STATE" == "charging" ]]; then
   zenity --info --title="Battery High" --text="Charge is at ${CHARGE_PER}% — consider unplugging to preserve health."
-  paplay /usr/share/sounds/freedesktop/stereo/complete.oga
+  paplay /usr/share/sounds/freedesktop/stereo/bell.oga
 fi
 
 # --- Log today's data ---
@@ -52,7 +52,7 @@ if [ -n "$YESTERDAY_LINE" ]; then
   if [[ -n "$YESTERDAY_HEALTH" && $(echo "$HEALTH < $YESTERDAY_HEALTH" | bc -l) -eq 1 ]]; then
     LOSS=$(echo "scale=2; $YESTERDAY_HEALTH - $HEALTH" | bc)
     zenity --warning --title="Battery Health Drop" --text="Health decreased by ${LOSS}% since yesterday (Now: ${HEALTH}%)"
-    paplay /usr/share/sounds/freedesktop/stereo/complete.oga
+    paplay /usr/share/sounds/freedesktop/stereo/bell.oga
   fi
 fi
 
