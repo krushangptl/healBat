@@ -10,6 +10,13 @@ A simple battery health checker and help you to maintain good condition of your 
 git clone https://github.com/krushangptl/healBat
 ```
 
+Make it executable
+
+```
+cd healBat
+chmod +x bat.sh
+```
+
 **Automate the script running process, script execute every 5 Minutes**
 
 ```
